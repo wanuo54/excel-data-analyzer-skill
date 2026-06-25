@@ -71,7 +71,7 @@ Features: Bar charts, trend lines, anomaly highlighting
 
 2. **Invoke the skill in Trae IDE**:
    ```
-   "分析项目下的Excel文件，计算碗奥博的平均综测"
+   "分析项目下的Excel文件，计算XXX的平均综测"
    "完成Excel操作综合题1"
    "筛选Excel数据胜>=10的记录"
    ```
