@@ -216,7 +216,7 @@ Most Excel analysis tools give you calculated results. **Excel-Data-Analyzer giv
 
 ### **Real Example**
 
-**Manual approach**: Calculate `负 = 赛 - 胜 - 平` manually, write `8` in cell
+**Manual approach**: Calculate `负 = 赖 - 胜 - 平` manually, write `8` in cell
 **This skill approach**: Write formula `=C11-D11-E11` in cell, Excel auto-calculates `8`
 
 **Result**: When user opens Excel, they see the formula, understand the calculation logic, and can modify it if needed.
