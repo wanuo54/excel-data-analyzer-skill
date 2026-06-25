@@ -1,0 +1,54 @@
+# Python虚拟环境
+venv/
+env/
+ENV/
+.venv
+
+# Python缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Excel临时文件
+*.tmp
+*.bak
+*~.xlsx
+*~.xls
+
+# 测试文件
+test_*.py
+tests/
+.pytest_cache/
+
+# IDE配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 日志文件
+*.log
+logs/
+
+# 临时生成的Excel文件
+*_converted.xlsx
+*_完成_*.xlsx
+analyze_*.py
+complete_question*.py
+correct_analysis.py
+final_analysis.py
+find_wan.py
+check_files.py
+read_question.py
+install_requirements.bat
+
+# 只保留核心skill文件和示例
+# 推送时会选择性提交必要文件
