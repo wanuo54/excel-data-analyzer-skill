@@ -149,73 +149,158 @@ class ExcelTaskAutomator:
 
 **记住：每一步都是必要的，不要因为"看起来简单"就跳过！**
 
-## 🚀 自动化环境配置
+## 🚀 环境准备
 
-### 环境检测与自动安装
-执行skill时会自动在项目目录下创建虚拟环境并安装所需库。
+### 用户需要手动准备环境
 
-**自动化流程代码：**
+**在调用此skill之前，请确保已安装以下依赖库。**
 
-```python
-import subprocess
-import sys
-import os
-from pathlib import Path
+### 方式1：使用requirements.txt安装（推荐）
 
-def setup_environment(project_dir='.'):
-    """
-    自动创建虚拟环境并安装依赖
-    在项目目录下创建venv虚拟环境
-    """
-    project_path = Path(project_dir)
-    venv_path = project_path / 'venv'
+创建`requirements.txt`文件：
 
-    # 1. 创建虚拟环境
-    if not venv_path.exists():
-        print("正在创建虚拟环境...")
-        subprocess.run([sys.executable, '-m', 'venv', str(venv_path)],
-                      cwd=project_path, check=True)
-        print(f"✅ 虚拟环境已创建: {venv_path}")
-
-    # 2. 确定pip路径（Windows/Linux/Mac兼容）
-    if sys.platform == 'win32':
-        pip_path = venv_path / 'Scripts' / 'pip.exe'
-        python_path = venv_path / 'Scripts' / 'python.exe'
-    else:
-        pip_path = venv_path / 'bin' / 'pip'
-        python_path = venv_path / 'bin' / 'python'
-
-    # 3. 安装依赖
-    required_packages = [
-        'pandas',
-        'openpyxl',
-        'xlwings',
-        'matplotlib',
-        'xlrd',
-        'numpy'
-    ]
-
-    print("正在安装依赖库...")
-    subprocess.run([str(pip_path), 'install', '-q'] + required_packages,
-                  cwd=project_path, check=True)
-    print("✅ 所有依赖已安装")
-
-    # 4. 返回虚拟环境的Python路径
-    return str(python_path)
-
-# 使用示例
-python_exe = setup_environment()
-# 后续使用虚拟环境的Python执行代码
-subprocess.run([python_exe, 'your_script.py'])
+```txt
+pandas>=1.3.0
+openpyxl>=3.0.0
+xlwings>=0.24.0
+matplotlib>=3.3.0
+xlrd>=2.0.0
+numpy>=1.20.0
 ```
 
-**依赖库清单：**
-- pandas - 数据分析核心库
-- openpyxl - Excel读写操作
-- xlwings - Excel实时交互（保留公式和功能）
-- matplotlib - 数据可视化
-- xlrd - 支持.xls格式读取
-- numpy - 数值计算
+安装依赖：
+
+```bash
+# Windows（推荐使用虚拟环境）
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+
+# Linux/Mac
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 方式2：逐个安装依赖库
+
+```bash
+pip install pandas
+pip install openpyxl
+pip install xlwings
+pip install matplotlib
+pip install xlrd
+pip install numpy
+```
+
+### 依赖库说明
+
+| 库名 | 用途 | 安装必要性 |
+|------|------|-----------|
+| **pandas** | 数据分析核心库 | ✅ 必须安装 |
+| **openpyxl** | Excel读写（支持公式） | ✅ 必须安装 |
+| **xlwings** | Excel实时交互（保留筛选） | ⭐ 可选（高级功能） |
+| **matplotlib** | 数据可视化 | ⭐ 可选（图表功能） |
+| **xlrd** | 旧版.xls格式支持 | ⭐ 可选（如有.xls文件） |
+| **numpy** | 数值计算 | ✅ 必须安装 |
+
+### 安装后验证
+
+验证依赖是否安装成功：
+
+```python
+# 在Python环境中运行
+import pandas as pd
+import openpyxl
+import numpy as np
+
+print("✅ 核心库安装成功")
+
+# 可选库验证
+try:
+    import xlwings
+    print("✅ xlwings安装成功（高级功能可用）")
+except ImportError:
+    print("⚠️ xlwings未安装（筛选功能受限）")
+
+try:
+    import matplotlib
+    print("✅ matplotlib安装成功（可视化功能可用）")
+except ImportError:
+    print("⚠️ matplotlib未安装（图表功能受限）")
+
+try:
+    import xlrd
+    print("✅ xlrd安装成功（支持.xls格式）")
+except ImportError:
+    print("⚠️ xlrd未安装（不支持.xls格式）")
+```
+
+### 注意事项
+
+⚠️ **重要提醒**：
+
+1. **必须先安装依赖**：
+   - 如果不安装，skill无法执行
+   - 会报错："ModuleNotFoundError"
+
+2. **推荐使用虚拟环境**：
+   - 避免污染系统Python环境
+   - 便于管理和卸载
+   - 不同项目可以使用不同版本
+
+3. **Windows用户特殊说明**：
+   - xlwings需要Microsoft Excel应用
+   - 如无Excel应用，xlwings功能受限
+   - 可只安装pandas+openpyxl完成基础功能
+
+4. **Linux/Mac用户说明**：
+   - 需要安装Python开发环境
+   - 可能需要额外安装系统依赖
+   - xlwings在Linux功能有限
+
+### 最小安装方案（基础功能）
+
+如果只需要基础Excel操作：
+
+```txt
+pandas>=1.3.0
+openpyxl>=3.0.0
+numpy>=1.20.0
+```
+
+安装命令：
+
+```bash
+pip install pandas openpyxl numpy
+```
+
+**功能范围**：
+- ✅ 数据读取和分析
+- ✅ Excel公式写入
+- ✅ 数值计算
+- ❌ 筛选功能保留（需要xlwings）
+- ❌ 图表创建（需要matplotlib）
+
+### 完整安装方案（所有功能）
+
+```txt
+pandas>=1.3.0
+openpyxl>=3.0.0
+xlwings>=0.24.0
+matplotlib>=3.3.0
+xlrd>=2.0.0
+numpy>=1.20.0
+```
+
+**功能范围**：
+- ✅ 所有功能可用
+- ✅ 数据读取和分析
+- ✅ Excel公式写入
+- ✅ 筛选功能保留
+- ✅ 图表创建
+- ✅ 数值计算
+- ✅ 支持.xls格式
 
 ## 📊 核心功能
 
